@@ -1,11 +1,24 @@
 const Todo = require('./todoModel');
 
-exports.checkStatus = async (req, res, next) => {
-  const todos = await Todo.find();
+const updateFinishedTodos = todos => {
   todos.forEach(async todo => {
-    await todo.changeTimePassedStatus();
+    try {
+      await todo.changeTimePassedStatus();
+    } catch (err) {
+      throw err;
+    }
   });
-  next();
+};
+
+exports.checkStatus = async (req, res, next) => {
+  try {
+    const todos = await Todo.find({ status: 'active' });
+    if (!todos) return next();
+    updateFinishedTodos(todos);
+    next();
+  } catch (err) {
+    throw err;
+  }
 };
 
 exports.getTodos = async (req, res) => {
@@ -88,23 +101,28 @@ exports.updateTodo = async (req, res) => {
 
 exports.completeTodo = async (req, res) => {
   try {
-    const todo = await Todo.findByIdAndUpdate(
-      req.params.id,
-      {
-        status: 'completed',
-      },
-      { new: true }
-    );
-    res.status(200).json({
-      status: 'success',
-      data: {
-        todo,
-      },
-    });
+    const todoCheck = await Todo.findById(req.params.id);
+    if (todoCheck.status === 'active') {
+      const todo = await Todo.findByIdAndUpdate(
+        req.params.id,
+        {
+          status: 'completed',
+        },
+        { new: true }
+      );
+      res.status(200).json({
+        status: 'success',
+        data: {
+          todo,
+        },
+      });
+    } else {
+      throw new Error('You can complete only active todo');
+    }
   } catch (err) {
     res.status(404).json({
       status: 'fail',
-      message: err,
+      message: err.message,
     });
   }
 };

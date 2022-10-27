@@ -44,6 +44,13 @@ todoSchema.virtual('timeleft').get(function () {
   return this.deadline - Date.now();
 });
 
+// todoSchema.pre(/^find/, function (next) {
+//   this.populate({
+//     select: '-__v',
+//   });
+//   next();
+// });
+
 todoSchema.methods.changeTimePassedStatus = async function () {
   if (this.timeleft <= 0) {
     await Todo.findByIdAndUpdate(this._id, {
