@@ -11,6 +11,7 @@ const todoSchema = new mongoose.Schema(
     },
     description: {
       type: String,
+      required: [true, 'Please add short description'],
       maxlength: [200, 'Maximal length is 200 charachters'],
     },
     status: {
@@ -25,6 +26,7 @@ const todoSchema = new mongoose.Schema(
         validator: function (input) {
           return input > Date.now();
         },
+        message: 'Deadline must be in future...',
       },
     },
     createdAt: {
@@ -41,6 +43,14 @@ const todoSchema = new mongoose.Schema(
 todoSchema.virtual('timeleft').get(function () {
   return this.deadline - Date.now();
 });
+
+todoSchema.methods.changeTimePassedStatus = async function () {
+  if (this.timeleft <= 0) {
+    await Todo.findByIdAndUpdate(this._id, {
+      status: 'finished',
+    });
+  }
+};
 
 const Todo = mongoose.model('Todo', todoSchema);
 
