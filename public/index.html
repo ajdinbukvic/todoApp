@@ -5,8 +5,93 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>ToDo App</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@200&family=Roboto:wght@400;500;700&family=Rubik:wght@400;500;700&display=swap"
+      rel="stylesheet"
+    />
     <link rel="stylesheet" href="./style.css" />
     <script defer src="./script.js"></script>
   </head>
-  <body></body>
+  <body>
+    <header class="header">
+      <div class="header-items">
+        <p class="header-name">ToDo App</p>
+        <input
+          type="search"
+          name="search"
+          id="search"
+          placeholder="Please input todo title..."
+        />
+        <button class="btn btn--add">Add new todo</button>
+      </div>
+    </header>
+    <main>
+      <div class="todo-container">
+        <div class="todo-item">
+          <div class="todo-text">
+            <p>Title: <span>Neki naslov bla bla</span></p>
+            <p>Deadline: <span>20.10.2003.</span></p>
+            <a>See description</a>
+          </div>
+          <div class="todo-btn">
+            <button class="btn">Complete</button>
+            <button class="btn">Edit</button>
+            <button class="btn">Delete</button>
+          </div>
+        </div>
+        <div class="todo-item">
+          <div class="todo-text">
+            <p>Title: <span>Neki naslov bla bla</span></p>
+            <p>Deadline: <span>20.10.2003.</span></p>
+            <a>See description</a>
+          </div>
+          <div class="todo-btn">
+            <button class="btn">Complete</button>
+            <button class="btn">Edit</button>
+            <button class="btn">Delete</button>
+          </div>
+        </div>
+        <div class="todo-item">
+          <div class="todo-text">
+            <p>Title: <span>Neki naslov bla bla</span></p>
+            <p>Deadline: <span>20.10.2003.</span></p>
+            <a>See description</a>
+          </div>
+          <div class="todo-btn">
+            <button class="btn">Complete</button>
+            <button class="btn">Edit</button>
+            <button class="btn">Delete</button>
+          </div>
+        </div>
+        <div class="todo-item">
+          <div class="todo-text">
+            <p>Title: <span>Neki naslov bla bla</span></p>
+            <p>Deadline: <span>20.10.2003.</span></p>
+            <a>See description</a>
+          </div>
+          <div class="todo-btn">
+            <button class="btn">Complete</button>
+            <button class="btn">Edit</button>
+            <button class="btn">Delete</button>
+          </div>
+        </div>
+      </div>
+    </main>
+    <footer class="footer">
+      <div class="footer-filter-btns">
+        <p class="footer-text">Filter:</p>
+        <button class="btn">All</button>
+        <button class="btn">Active</button>
+        <button class="btn">Completed</button>
+        <button class="btn">Finished</button>
+      </div>
+      <div class="footer-sort-btns">
+        <p class="footer-text">Sort by:</p>
+        <button class="btn">Oldest</button>
+        <button class="btn">Newest</button>
+      </div>
+    </footer>
+  </body>
 </html>

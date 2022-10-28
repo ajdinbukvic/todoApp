@@ -1,0 +1,139 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html {
+  font-size: 62.5%;
+}
+
+body {
+  font-family: 'Roboto', 'sans-serif';
+  font-weight: 400;
+  color: #555;
+}
+
+.header {
+  width: 100%;
+  border-bottom: 4px solid #1d2a27;
+}
+
+.header-items {
+  padding: 1.6rem 2.4rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background-color: #92d1c3;
+}
+
+.header-name {
+  font-size: 2.4rem;
+  font-weight: 700;
+}
+
+#search {
+  border-radius: 8px;
+  width: 33.333%;
+  height: 3.2rem;
+  padding: 1.2rem;
+  font-size: 1.8rem;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+}
+
+#search::placeholder {
+  color: aaa;
+}
+
+#search *:focus {
+  outline: none;
+  box-shadow: 0 0 0 0.8rem rgba(253, 242, 233, 0.5);
+}
+
+main {
+  margin-top: 3.2rem;
+}
+
+.btn {
+  display: inline-block;
+  font-size: 1.4rem;
+  font-weight: 600;
+  border-radius: 12px;
+  border: none;
+  cursor: pointer;
+  padding: 0.8rem 1.2rem;
+  background-color: #3a544e;
+  color: white;
+}
+
+.todo-container {
+  max-width: 64rem;
+  margin: 0 auto;
+  /* padding: 1.2rem 1.6rem; */
+  display: flex;
+  flex-direction: column;
+  flex-wrap: wrap;
+}
+
+.todo-item {
+  color: #333;
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  font-size: 1.6rem;
+  position: relative;
+  background-color: #a8dacf;
+  margin-bottom: 4rem;
+  padding: 0.8rem 1.2rem;
+  border-bottom: 4px solid #1d2a27;
+}
+
+.todo-item::before {
+  content: 'Active';
+  position: absolute;
+  top: -6%;
+  left: -4%;
+  text-transform: uppercase;
+  background-color: #ffd43b;
+  padding: 0.8rem 1.2rem;
+  transform: rotate(-30deg);
+}
+
+.todo-text {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+.todo-btn {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+.footer {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  height: 5.6rem;
+  width: 100%;
+  background-color: #92d1c3;
+  padding: 1.2rem 3.6em;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.footer-text {
+  font-size: 1.6rem;
+}
+
+.footer-filter-btns {
+  display: flex;
+  gap: 2.4rem;
+}
+
+.footer-sort-btns {
+  display: flex;
+  gap: 2.4rem;
+}
