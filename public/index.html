@@ -24,7 +24,7 @@
           id="search"
           placeholder="Please input todo title..."
         />
-        <button class="btn btn--add">Add new todo</button>
+        <button class="btn" id="btn-add">Add new todo</button>
       </div>
     </header>
     <main>
@@ -78,14 +78,45 @@
           </div>
         </div>
       </div>
+      <div class="modal hidden">
+        <button class="close-modal">&times;</button>
+        <h2 class="form-heading">Add new todo:</h2>
+        <form class="add-form">
+          <div class="input-item">
+            <label for="title">Title:</label
+            ><input type="text" name="title" id="title" />
+          </div>
+          <div class="input-item">
+            <label for="description">Description:</label>
+            <textarea rows="4" cols="50" id="description"></textarea>
+          </div>
+          <div class="input-item">
+            <label for="deadline">Deadline:</label>
+            <input type="date" name="deadline" id="deadline" />
+          </div>
+          <button type="submit" class="btn" id="btn-save">Save</button>
+        </form>
+      </div>
+      <div class="overlay hidden"></div>
     </main>
     <footer class="footer">
       <div class="footer-filter-btns">
         <p class="footer-text">Filter:</p>
-        <button class="btn">All</button>
-        <button class="btn">Active</button>
-        <button class="btn">Completed</button>
-        <button class="btn">Finished</button>
+        <div class="btn-filter">
+          <span class="status-counter">15</span><button class="btn">All</button>
+        </div>
+        <div class="btn-filter">
+          <span class="status-counter">8</span
+          ><button class="btn">Active</button>
+        </div>
+        <div class="btn-filter">
+          <span class="status-counter">4</span
+          ><button class="btn">Completed</button>
+        </div>
+        <div class="btn-filter">
+          <span class="status-counter">3</span
+          ><button class="btn">Finished</button>
+        </div>
       </div>
       <div class="footer-sort-btns">
         <p class="footer-text">Sort by:</p>
