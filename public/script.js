@@ -44,13 +44,18 @@ document.addEventListener('keydown', e => {
 addForm.addEventListener('submit', function (e) {
   e.preventDefault();
   if (!title.value || !description.value || !deadline.value) return;
+  const newTodo = {
+    title: title.value,
+    description: description.value,
+    deadline: deadline.value,
+  };
   closeModal();
-  Todo.addTodo();
+  Todo.addTodo(newTodo);
 });
 
 search.addEventListener('keypress', function (e) {
   if (e.key === 'Enter') {
     e.preventDefault();
-    Todo.searchTodo();
+    Todo.searchTodos(search.value);
   }
 });

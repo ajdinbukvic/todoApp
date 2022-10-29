@@ -1,35 +1,48 @@
 export default class {
-  todoContainter = document.querySelector('.todo-container');
+  apiUrl = 'http://127.0.0.1:3000/api/todos';
+  todoContainer = document.querySelector('.todo-container');
   todos = [];
   filter = 'all';
   sort = 'newest';
 
   async getTodos() {
-    const res = await fetch('http://127.0.0.1:3000/api/todos');
-    const data = await res.json();
-    this.todos = data.data.todos;
-    this.renderTodos();
-    this.setStatus();
-    this.setFilterCount();
+    try {
+      const res = await fetch(`${this.apiUrl}`);
+      if (!res.ok) throw new Error('Problem with getting data...');
+      const data = await res.json();
+      if (data.data.todos) {
+        this.todos = data.data.todos;
+        this.init();
+      }
+    } catch (err) {
+      console.log(err);
+    }
+  }
+  generateTemplate(todo) {
+    const formattedDate = todo.deadline.split('T').at(0);
+    this.todoContainer.innerHTML += `
+      <div class="todo-item" data-content="${todo.status}" data-id="${todo.id}">
+        <div class="todo-text">
+          <h2>Title: <span>${todo.title}</span></h2>
+          <p>Deadline: <span>${formattedDate}</span></p>
+          <p>Description: <span>${todo.description}</span></p>
+        </div>
+        <div class="todo-btn">
+          <button class="btn" ${
+            todo.status !== 'active' ? 'disabled style=cursor:not-allowed' : ''
+          }>Complete</button>
+          <button class="btn"${
+            todo.status !== 'active' ? 'disabled style=cursor:not-allowed' : ''
+          }>Edit</button>
+          <button class="btn btn-delete">Delete</button>
+        </div>
+      </div>`;
   }
   renderTodos() {
     if (!this.todos) return;
-    this.todoContainter.innerHTML = '';
+    this.todoContainer.innerHTML = '';
     this.todos.forEach(todo => {
-      const formattedDate = todo.deadline.split('T').at(0);
-      this.todoContainter.innerHTML += `
-      <div class="todo-item" data-content="${todo.status}">
-        <div class="todo-text">
-          <p>Title: <span>${todo.title}</span></p>
-          <p>Deadline: <span>${formattedDate}</span></p>
-          <a>See description</a>
-        </div>
-        <div class="todo-btn">
-          <button class="btn">Complete</button>
-          <button class="btn">Edit</button>
-          <button class="btn">Delete</button>
-        </div>
-      </div>`;
+      this.generateTemplate(todo);
     });
   }
   setStatus() {
@@ -59,10 +72,66 @@ export default class {
     c.textContent = stats.at(1);
     f.textContent = stats.at(2);
   }
+  addEvents() {
+    const deleteBtns = document.querySelectorAll('.btn-delete');
+    const target = this;
+    deleteBtns.forEach(btn => {
+      btn.addEventListener('click', function (e) {
+        const el = btn.closest('.todo-item');
+        if (!el) return;
+        const id = el.dataset.id;
+        if (!confirm('Are you sure you want to delete this todo?')) return;
+        target.deleteTodo(id);
+      });
+    });
+  }
+  init() {
+    this.renderTodos();
+    this.setStatus();
+    this.setFilterCount();
+    this.addEvents();
+  }
   sortTodos() {}
-  search() {}
-  addTodo() {}
+  searchTodos(inputValue) {
+    this.todoContainer.innerHTML = '';
+    this.todos.forEach(t => {
+      if (t.title.startsWith(inputValue)) {
+        this.generateTemplate(t);
+      }
+    });
+    this.setStatus();
+  }
+  async addTodo(newTodo) {
+    try {
+      const res = await fetch(`${this.apiUrl}`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(newTodo),
+      });
+      if (!res.ok) throw new Error('Problem with posting data...');
+      const data = await res.json();
+      if (data.status === 'success') {
+        this.getTodos();
+        this.init();
+      }
+    } catch (err) {
+      console.log(err);
+    }
+  }
   updateTodo() {}
-  deleteTodo() {}
+  async deleteTodo(id) {
+    try {
+      const res = await fetch(`${this.apiUrl}/${id}`, {
+        method: 'DELETE',
+      });
+      if (!res.ok) throw new Error('Problem with deleting data...');
+      this.getTodos();
+      this.init();
+    } catch (err) {
+      console.log(err);
+    }
+  }
   completeTodo() {}
 }
