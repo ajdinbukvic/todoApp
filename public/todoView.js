@@ -1,5 +1,4 @@
 import modalView from './modalView.js';
-const Modal = new modalView();
 
 export default class {
   apiUrl = 'http://127.0.0.1:3000/api/todos';
@@ -37,10 +36,6 @@ export default class {
     const formattedDate = todo.deadline.split('T').at(0);
     const notActive =
       todo.status !== 'active' ? 'disabled style=cursor:not-allowed' : '';
-    const editResult =
-      todo.status !== 'active'
-        ? 'disabled style=cursor:not-allowed'
-        : `class='btn-edit'`;
     this.todoContainer.innerHTML += `
       <div class="todo-item" data-content="${todo.status}" data-id="${todo.id}">
         <div class="todo-text">
@@ -68,13 +63,14 @@ export default class {
       this.generateTemplate(todo);
     });
   }
-  setStatus() {
+  setStatus(todos = undefined) {
     const todoStatus = document.querySelectorAll('.todo-item');
     todoStatus.forEach((t, i) => {
-      t.dataset.content = this.todos[i].status;
+      const result = !todos ? this.todos[i].status : todos[i].status;
+      t.dataset.content = result;
       let statusColor;
-      if (this.todos[i].status === 'active') statusColor = '#ffd43b';
-      else if (this.todos[i].status === 'completed') statusColor = '#4f772d';
+      if (result === 'active') statusColor = '#ffd43b';
+      else if (result === 'completed') statusColor = '#4f772d';
       else statusColor = '#d62828';
       t.style.setProperty('--status', `${statusColor}`);
     });
@@ -131,6 +127,7 @@ export default class {
         const id = el.dataset.id;
         const currentTodo = await target.getTodo(id);
         currentTodo.deadline = currentTodo.deadline.split('T').at(0);
+        const Modal = new modalView();
         Modal.openModal('edit', currentTodo);
         Modal.formSubmit('edit', id);
       });
@@ -144,15 +141,20 @@ export default class {
     this.addCompleteEvents();
     this.addEditEvents();
   }
-  sortTodos() {}
   searchTodos(inputValue) {
     this.todoContainer.innerHTML = '';
-    this.todos.forEach(t => {
-      if (t.title.startsWith(inputValue)) {
-        this.generateTemplate(t);
-      }
-    });
-    this.setStatus();
+    const todosCopy = this.todos.filter(t => t.title.startsWith(inputValue));
+    console.log(todosCopy);
+    if (!todosCopy.length) {
+      console.log('test');
+      this.todoContainer.innerHTML = `<h1 style="text-align:center">No search results found...</h1>`;
+      return;
+    }
+    todosCopy.forEach(t => this.generateTemplate(t));
+    this.setStatus(todosCopy);
+    this.addDeleteEvents();
+    this.addCompleteEvents();
+    this.addEditEvents();
   }
   async addTodo(newTodo) {
     try {
@@ -193,6 +195,7 @@ export default class {
       if (data.status === 'success') {
         this.getTodos();
         this.init();
+        alert('Successfully updated todo!');
       }
     } catch (err) {
       console.log(err);
@@ -222,4 +225,5 @@ export default class {
       console.log(err);
     }
   }
+  sortTodos() {}
 }

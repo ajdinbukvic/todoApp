@@ -9,7 +9,7 @@ export default class {
     this.modalContainer.innerHTML = `
       <button class="close-modal">&times;</button>
       <h2 class="form-heading">${typeText}</h2>
-      <form class="add-form">
+      <form class="form">
         <div class="input-item">
           <label for="title">Title:</label
           ><input type="text" name="title" id="title" value="${
@@ -40,7 +40,6 @@ export default class {
     document.body.style.overflow = 'hidden';
     window.scrollTo(0, 0);
     this.addEvents();
-    //this.formSubmit();
   }
   closeModal() {
     this.modalContainer.classList.add('hidden');
@@ -64,11 +63,12 @@ export default class {
     });
   }
   formSubmit(type, id) {
-    const addForm = document.querySelector('.add-form');
+    const form = document.querySelector('.form');
     const title = document.querySelector('#title');
     const description = document.querySelector('#description');
     const deadline = document.querySelector('#deadline');
-    addForm.addEventListener('submit', function (e) {
+    const target = this;
+    form.addEventListener('submit', function (e) {
       e.preventDefault();
       if (!title.value || !description.value || !deadline.value) {
         alert('You must fill in all fields!');
@@ -87,7 +87,7 @@ export default class {
         description: description.value,
         deadline: deadline.value,
       };
-      Modal.closeModal();
+      target.closeModal();
       title.value = description.value = deadline.value = '';
       type === 'add' ? Todo.addTodo(newTodo) : Todo.updateTodo(newTodo, id);
     });
