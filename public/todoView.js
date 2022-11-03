@@ -12,15 +12,16 @@ export default class {
     try {
       if (sortBy) this.sort = sortBy;
       if (filterBy) this.filter = filterBy;
-      console.log(this.sort);
-      console.log(this.filter);
-      const res = await fetch(
-        `${this.apiUrl}?sort=${this.sort}&filter=${this.filter}`
-      );
-      if (!res.ok) throw new Error('Problem with getting data...');
-      const data = await res.json();
-      if (data.data.todos) {
-        this.todos = data.data.todos;
+      const [res1, res2] = await Promise.all([
+        fetch(`${this.apiUrl}?sort=${this.sort}&filter=${this.filter}`),
+        fetch(`${this.apiUrl}/todo-status-count`),
+      ]);
+      if (!res1.ok || !res2.ok) throw new Error('Problem with getting data...');
+      const data1 = await res1.json();
+      const data2 = await res2.json();
+      if (data1.data.todos && data2.data.statusCount) {
+        this.todos = data1.data.todos;
+        this.statusCount = data2.data.statusCount;
         this.init();
       }
     } catch (err) {
@@ -70,6 +71,22 @@ export default class {
       this.generateTemplate(todo);
     });
   }
+  renderStatusCount() {
+    if (!this.statusCount) return;
+    const all = document.querySelector('.status-counter-all');
+    const a = document.querySelector('.status-counter-active');
+    const c = document.querySelector('.status-counter-completed');
+    const f = document.querySelector('.status-counter-finished');
+    all.textContent = this.statusCount.reduce(
+      (acc, el) => acc + el.countNum,
+      0
+    );
+    a.textContent = this.statusCount.find(el => el._id === 'active').countNum;
+    c.textContent = this.statusCount.find(
+      el => el._id === 'completed'
+    ).countNum;
+    f.textContent = this.statusCount.find(el => el._id === 'finished').countNum;
+  }
   setStatus(todos = undefined) {
     const todoStatus = document.querySelectorAll('.todo-item');
     todoStatus.forEach((t, i) => {
@@ -82,22 +99,22 @@ export default class {
       t.style.setProperty('--status', `${statusColor}`);
     });
   }
-  setFilterCount() {
-    const stats = [0, 0, 0];
-    this.todos.forEach(t => {
-      if (t.status === 'active') stats[0]++;
-      else if (t.status === 'completed') stats[1]++;
-      else stats[2]++;
-    });
-    const all = document.querySelector('.status-counter-all');
-    const a = document.querySelector('.status-counter-active');
-    const c = document.querySelector('.status-counter-completed');
-    const f = document.querySelector('.status-counter-finished');
-    all.textContent = this.todos.length;
-    a.textContent = stats.at(0);
-    c.textContent = stats.at(1);
-    f.textContent = stats.at(2);
-  }
+  // setFilterCount() {
+  //   const stats = [0, 0, 0];
+  //   this.todos.forEach(t => {
+  //     if (t.status === 'active') stats[0]++;
+  //     else if (t.status === 'completed') stats[1]++;
+  //     else stats[2]++;
+  //   });
+  //   const all = document.querySelector('.status-counter-all');
+  //   const a = document.querySelector('.status-counter-active');
+  //   const c = document.querySelector('.status-counter-completed');
+  //   const f = document.querySelector('.status-counter-finished');
+  //   all.textContent = this.todos.length;
+  //   a.textContent = stats.at(0);
+  //   c.textContent = stats.at(1);
+  //   f.textContent = stats.at(2);
+  // }
   addDeleteEvents() {
     const deleteBtns = document.querySelectorAll('.btn-delete');
     const target = this;
@@ -142,8 +159,9 @@ export default class {
   }
   init() {
     this.renderTodos();
+    this.renderStatusCount();
     this.setStatus();
-    this.setFilterCount();
+    //this.setFilterCount();
     this.addDeleteEvents();
     this.addCompleteEvents();
     this.addEditEvents();
@@ -151,9 +169,7 @@ export default class {
   searchTodos(inputValue) {
     this.todoContainer.innerHTML = '';
     const todosCopy = this.todos.filter(t => t.title.startsWith(inputValue));
-    console.log(todosCopy);
     if (!todosCopy.length) {
-      console.log('test');
       this.todoContainer.innerHTML = `<h1 style="text-align:center">No search results found...</h1>`;
       return;
     }

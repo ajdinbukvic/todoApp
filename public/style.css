@@ -163,7 +163,7 @@ a {
   gap: 2.4rem;
 }
 
-.btn-filter {
+.btn-filter-container {
   display: flex;
   gap: 1.2rem;
   margin-right: 3.2rem;

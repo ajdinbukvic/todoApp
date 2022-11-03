@@ -7,6 +7,9 @@ const Todo = new todoView();
 const btnAdd = document.querySelector('#btn-add');
 const search = document.querySelector('#search');
 
+const filterBtnsContainer = document.querySelector('.footer-filter-btns');
+const sortBtnsContainer = document.querySelector('.footer-sort-btns');
+
 Todo.getTodos();
 
 btnAdd.addEventListener('click', () => {
@@ -14,39 +17,18 @@ btnAdd.addEventListener('click', () => {
   Modal.formSubmit('add', undefined);
 });
 
-search.addEventListener('keyup', function (e) {
+search.addEventListener('keyup', () => {
   Todo.searchTodos(search.value);
 });
 
-const sortByOldest = document.querySelector('#btn-sort-oldest');
-
-sortByOldest.addEventListener('click', function (e) {
-  Todo.getTodos(undefined, 'oldest');
+filterBtnsContainer.addEventListener('click', e => {
+  const el = e.target.closest('.btn-filter');
+  if (!el) return;
+  Todo.getTodos(el.textContent.toLowerCase().trim());
 });
 
-const sortByNewest = document.querySelector('#btn-sort-newest');
-
-sortByNewest.addEventListener('click', function (e) {
-  Todo.getTodos(undefined, 'newest');
-});
-
-const filterAll = document.querySelector('#btn-filter-all');
-const filterActive = document.querySelector('#btn-filter-active');
-const filterCompleted = document.querySelector('#btn-filter-completed');
-const filterFinished = document.querySelector('#btn-filter-finished');
-
-filterAll.addEventListener('click', function (e) {
-  Todo.getTodos('all');
-});
-
-filterActive.addEventListener('click', function (e) {
-  Todo.getTodos('active');
-});
-
-filterCompleted.addEventListener('click', function (e) {
-  Todo.getTodos('completed');
-});
-
-filterFinished.addEventListener('click', function (e) {
-  Todo.getTodos('finished');
+sortBtnsContainer.addEventListener('click', e => {
+  const el = e.target.closest('.btn-sort');
+  if (!el) return;
+  Todo.getTodos(undefined, el.textContent.toLowerCase().trim());
 });

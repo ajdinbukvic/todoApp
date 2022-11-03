@@ -163,7 +163,6 @@ exports.getTodosCount = async (req, res) => {
         },
       },
     ]);
-    console.log(statusCount);
     res.status(200).json({
       status: 'success',
       data: {
