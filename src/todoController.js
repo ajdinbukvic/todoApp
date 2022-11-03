@@ -23,7 +23,18 @@ exports.checkStatus = async (req, res, next) => {
 
 exports.getTodos = async (req, res) => {
   try {
-    const todos = await Todo.find();
+    let sortBy = req.query.sort;
+    let filterBy = req.query.filter;
+    let query, todos;
+    if (sortBy === 'oldest') {
+      if (filterBy === 'all') todos = await Todo.find();
+      else todos = await Todo.find({ status: filterBy });
+    } else if (sortBy === 'newest') {
+      if (filterBy === 'all') query = await Todo.find();
+      else query = await Todo.find({ status: filterBy });
+      todos = await (await query).reverse();
+    }
+
     res.status(200).json({
       status: 'success',
       results: todos.length,
@@ -133,6 +144,31 @@ exports.deleteTodo = async (req, res) => {
     res.status(204).json({
       status: 'success',
       data: null,
+    });
+  } catch (err) {
+    res.status(404).json({
+      status: 'fail',
+      message: err,
+    });
+  }
+};
+
+exports.getTodosCount = async (req, res) => {
+  try {
+    const statusCount = await Todo.aggregate([
+      {
+        $group: {
+          _id: '$status',
+          countNum: { $sum: 1 },
+        },
+      },
+    ]);
+    console.log(statusCount);
+    res.status(200).json({
+      status: 'success',
+      data: {
+        statusCount,
+      },
     });
   } catch (err) {
     res.status(404).json({

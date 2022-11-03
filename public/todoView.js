@@ -4,12 +4,19 @@ export default class {
   apiUrl = 'http://127.0.0.1:3000/api/todos';
   todoContainer = document.querySelector('.todo-container');
   todos = [];
+  statusCount = [];
   filter = 'all';
   sort = 'newest';
 
-  async getTodos() {
+  async getTodos(filterBy, sortBy) {
     try {
-      const res = await fetch(`${this.apiUrl}`);
+      if (sortBy) this.sort = sortBy;
+      if (filterBy) this.filter = filterBy;
+      console.log(this.sort);
+      console.log(this.filter);
+      const res = await fetch(
+        `${this.apiUrl}?sort=${this.sort}&filter=${this.filter}`
+      );
       if (!res.ok) throw new Error('Problem with getting data...');
       const data = await res.json();
       if (data.data.todos) {

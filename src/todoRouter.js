@@ -5,6 +5,7 @@ const router = express.Router();
 router.use(todoController.checkStatus);
 
 router.route('/').get(todoController.getTodos).post(todoController.createTodo);
+router.route('/todo-status-count').get(todoController.getTodosCount);
 
 router
   .route('/:id')

@@ -7,7 +7,7 @@
     <title>ToDo App</title>
     <link
       rel="shortcut icon"
-      href="./public/icon-todolist.png"
+      href="./public/todo-icon.png"
       type="image/x-icon"
     />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -46,25 +46,25 @@
         <p class="footer-text">Filter:</p>
         <div class="btn-filter">
           <span class="status-counter status-counter-all"></span
-          ><button class="btn">All</button>
+          ><button class="btn" id="btn-filter-all">All</button>
         </div>
         <div class="btn-filter">
           <span class="status-counter status-counter-active"></span
-          ><button class="btn">Active</button>
+          ><button class="btn" id="btn-filter-active">Active</button>
         </div>
         <div class="btn-filter">
           <span class="status-counter status-counter-completed"></span
-          ><button class="btn">Completed</button>
+          ><button class="btn" id="btn-filter-completed">Completed</button>
         </div>
         <div class="btn-filter">
           <span class="status-counter status-counter-finished"></span
-          ><button class="btn">Finished</button>
+          ><button class="btn" id="btn-filter-finished">Finished</button>
         </div>
       </div>
       <div class="footer-sort-btns">
         <p class="footer-text">Sort by:</p>
-        <button class="btn">Oldest</button>
-        <button class="btn">Newest</button>
+        <button class="btn" id="btn-sort-oldest">Oldest</button>
+        <button class="btn" id="btn-sort-newest">Newest</button>
       </div>
     </footer>
   </body>
