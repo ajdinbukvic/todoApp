@@ -44,7 +44,7 @@ export default class {
   closeModal() {
     this.modalContainer.classList.add('hidden');
     this.overlay.classList.add('hidden');
-    document.body.style.overflow = 'scroll';
+    document.body.style.overflowY = 'scroll';
     const footer = document.querySelector('.footer');
     footer.style.bottom = 0;
   }

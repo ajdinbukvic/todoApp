@@ -24,11 +24,19 @@ search.addEventListener('keyup', () => {
 filterBtnsContainer.addEventListener('click', e => {
   const el = e.target.closest('.btn-filter');
   if (!el) return;
+  const btns = document
+    .querySelectorAll('.btn-filter')
+    .forEach(btn => btn.classList.remove('current'));
+  el.classList.add('current');
   Todo.getTodos(el.textContent.toLowerCase().trim());
 });
 
 sortBtnsContainer.addEventListener('click', e => {
   const el = e.target.closest('.btn-sort');
   if (!el) return;
+  const btns = document
+    .querySelectorAll('.btn-sort')
+    .forEach(btn => btn.classList.remove('current'));
+  el.classList.add('current');
   Todo.getTodos(undefined, el.textContent.toLowerCase().trim());
 });

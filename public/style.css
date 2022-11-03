@@ -66,10 +66,14 @@ main {
   color: #fff;
 }
 
+.current {
+  background-color: #fff;
+  color: #3a544e;
+}
+
 .todo-container {
   max-width: 64rem;
   margin: 0 auto;
-  /* padding: 1.2rem 1.6rem; */
   display: flex;
   flex-direction: column;
   flex-wrap: wrap;
@@ -77,9 +81,8 @@ main {
 
 .todo-item {
   color: #333;
-  display: flex;
-  align-items: center;
-  justify-content: space-around;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
   font-size: 1.6rem;
   position: relative;
   background-color: #a8dacf;
@@ -114,6 +117,9 @@ main {
   display: flex;
   flex-direction: column;
   gap: 2rem;
+  grid-column: 1 / -2;
+  align-self: center;
+  padding: 0.8rem 3.6rem;
 }
 
 .todo-text p,
@@ -130,6 +136,9 @@ a {
   display: flex;
   flex-direction: column;
   gap: 2rem;
+  width: 50%;
+  align-self: center;
+  justify-self: center;
 }
 
 .footer {
@@ -153,11 +162,7 @@ a {
   font-weight: 700;
 }
 
-.footer-filter-btns {
-  display: flex;
-  gap: 2.4rem;
-}
-
+.footer-filter-btns,
 .footer-sort-btns {
   display: flex;
   gap: 2.4rem;
@@ -226,7 +231,6 @@ a {
 .form {
   display: flex;
   flex-direction: column;
-  align-items: flex-start;
   justify-content: center;
   gap: 2.8rem;
 }
@@ -234,7 +238,6 @@ a {
 .input-item {
   display: flex;
   align-items: center;
-  justify-content: space-between;
   gap: 2.4rem;
 }
 label {
